@@ -1,0 +1,419 @@
+\documentclass[
+twoside,
+10pt,
+openany
+]{book}%
+
+%% this document should have UTF-8 encoding compile with LuaLaTeX
+\usepackage[no-math]{fontspec}
+\setmainfont{Linux Libertine O}
+
+
+% for URL commands
+%\usepackage[hyphens]{url}
+\PassOptionsToPackage{hyphens}{url}\usepackage[hidelinks]{hyperref}
+
+% Avoid orphan lines
+\widowpenalty10000
+\clubpenalty10000
+
+% For PDF cover
+\usepackage{pdfpages}
+
+%% Custom margins for the document
+\usepackage[
+letterpaper,
+left=1.75in,
+right=1.75in,
+top=1.25in,
+bottom=1.25in,
+headsep=0.5in,
+footskip=0.5in,
+includefoot,
+]{geometry}
+
+\usepackage{pbox}
+
+% for notes
+\setlength{\marginparwidth}{2cm}
+\usepackage[colorinlistoftodos,textsize=footnotesize]{todonotes}
+\reversemarginpar
+
+\usepackage{soul}
+
+\newcommand{\ortho}[1]{{\textless}#1\textgreater}
+
+
+\usepackage{
+xcolor,
+colortbl
+}
+
+% Formatting for tables
+\usepackage{
+booktabs,
+longtable,
+pdflscape,
+multirow,
+array,
+}
+  \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+  \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+  % for table colors
+%  \let\oldtabular\tabular
+%  \let\endoldtabular\endtabular
+%  \renewenvironment{tabular}{\rowcolors{2}{white}{lightgray}\oldtabular}{\endoldtabular}
+
+\usepackage[figuresright]{rotating}
+
+
+
+% Formatting for figures and subfigures
+\usepackage{
+graphicx,
+subfig
+}
+\usepackage[
+figurewithin=none,
+tablewithin=none,
+labelfont=bf
+]{caption}
+\usepackage{tablefootnote}
+\usepackage{longtable}
+
+% For figures and tables to begin at 1 again for each chapter
+\usepackage{chngcntr}
+\counterwithin*{figure}{chapter}
+\counterwithin*{table}{chapter}
+
+
+
+% Brucks uses expex, so need to implement for that
+%\usepackage{expex}
+
+% for example formatting
+\usepackage{gb4e}\noautomath
+\counterwithin{exx}{chapter} % reset example counter every chapter
+
+
+% For Brucks and Lovick expex examples
+%\gathertags % write tags to external tag file
+
+
+% To quickly customize numbers
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{multicol}
+
+
+% For Orcid ID at the end of each chapter
+\usepackage{
+academicons,
+%xcolor
+}
+\definecolor{orcidlogocol}{HTML}{A6CE39}
+
+% to simplify input of Orcid footer
+\newcommand{\orcidfooter}[3]{
+    \begin{flushright}
+    \small
+    #1\\
+    #2
+    \ifx&#3&
+    \else
+    \\    \href{https://orcid.org/#3}{\textcolor{orcidlogocol}{\aiOrcid} orcid.org/#3}
+    \fi
+    \end{flushright}
+}
+
+% for reference heading
+\newcommand{\refheading}{
+    \clearpage
+    \begin{center}
+    \textbf{References}
+    \end{center}
+}
+
+% example references
+\newcommand{\REF}[1]{(\ref{#1})}
+
+
+
+
+\usepackage{makecell}
+
+% \usepackage[
+% 	doi=false,
+% 	backend=biber,
+% 	natbib=true,
+% 	style=biblatex-sp-unified,
+% 	citestyle=sp-authoryear-comp]{biblatex}
+%\usepackage[style=glossa.bst,
+%	backend=biber,
+%	natbib=true,
+%	citestyle=sp-authoryear-comp
+%	]{biblatex}
+%\usepackage{chapterbib}
+
+
+% For natbib bibliographies
+\usepackage[sectionbib]{natbib}
+\usepackage{chapterbib}
+\bibpunct[:~]{(}{)}{,}{a}{}{,}
+	\newcommand{\BIBand}{\&}
+	\setlength{\bibsep}{0pt}
+	\setlength{\bibhang}{2em}
+	\bibliographystyle{ldc}
+\renewcommand{\bibsection}{}
+\newcommand\namecite{\citet}
+\newcommand\citeboth{\citealt}
+\newcommand{\quotecite}[1]{\citeauthor{#1}'s (\citeyear{#1})}
+\renewcommand\cite{\citep}
+
+
+%\bibpunct[:]{(}{)}{;}{a}{}{;}
+
+%%% Bibliography commands from Good paper %%%
+\makeatletter
+\renewcommand\@biblabel[1]{}
+\makeatother
+
+\let\OLDthebibliography\thebibliography
+ \renewcommand\thebibliography[1]{
+  \OLDthebibliography{#1}
+  \setlength{\parskip}{0pt}
+  \setlength{\itemsep}{0pt plus 0.5ex}
+}
+
+
+%%% end bib stuff from Good %%%
+
+% For the bibliography hanging indent
+%\newenvironment{hang}
+%  {\begin{list}
+%    {}
+%    {\setlength{\itemindent}{-2em}%%'
+%    \setlength{\leftmargin}{2em}%%'
+%    \setlength{\itemsep}{0pt}%%'
+%    \setlength{\parsep}{\parskip}%%'
+%    \setlength{\topsep}{\parskip}%%'
+%    }
+%    \setlength{\parindent}{-2em}%%
+%    \item[]
+%  }
+%  {\end{list}
+%  }
+
+\makeatletter
+\newenvironment{hang}
+ {\let\@afterindentfalse\@afterindenttrue % we want \parindent anywhere
+%  \chapter{\bibname}%
+  \setlength{\leftskip}{\parindent}%
+  \setlength{\parindent}{-\leftskip}%
+%  \setlength{\parskip}{\medskipamount}
+  % these two lines prevent page breaking in the middle of bib entries
+  \widowpenalties 1 10000
+  \raggedbottom
+  }
+\makeatother
+
+% Book title
+\def\booktitle{Language and Toponymy in Alaska and Beyond: Papers in Honor of James Kari}
+
+% So that sections restart in each chapter
+\renewcommand*\thesection{\arabic{section}}
+
+%%sets the chapter, section, subsection, etc. labels to LD&C style
+\usepackage{titlesec}
+  \titleformat{\chapter}[display]
+    {\centering\normalfont\bfseries}{}{45pt}{\huge}
+  \titleformat{\section}[runin]
+    {\bfseries}{\thesection.}{0.4em}{}
+  \titleformat{\subsection}[runin]
+    {\bfseries}{\thesubsection}{0.4em}{}
+  \titleformat{\subsubsection}[runin]
+    {\bfseries}{\thesubsubsection}{0.4em}{}
+  \titleformat{\paragraph}[runin]
+    {\bfseries}{\theparagraph}{0.4em}{}
+  \titleformat{\subparagraph}[runin]
+    {\bfseries}{\thesubparagraph}{0.4em}{}
+  \titlespacing*{\subparagraph}
+    {0pt}{3.25ex plus 1ex minus 0.2ex}{1em}
+
+\newcommand{\beginchapter}{}
+\newcommand{\finishchapter}{}
+
+% For the handle on the header on the first page
+\newcommand{\sethandle}[1]{\def\handle{#1}}
+
+\usepackage{fancyhdr}
+  % The header on every page except the first
+  \pagestyle{fancy}
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \setlength{\headheight}{65pt}
+  \fancyhead[R]{\thepage}
+  \fancyhead[LE]{\small\textit{\leftmark}}
+  \fancyhead[LO]{\small\textit{\authorlast}}
+  \fancyfoot[R]{\small\textsc{\textit{\booktitle}}}
+  \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+  % The header on the first page of each chapter
+  \fancypagestyle{firststyle}
+  {
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}%
+    \setlength{\headheight}{65pt}
+    \fancyhead[L]{\fontsize{100pt}{0pt}
+    \color{lightgray}{\textrm{\thechapter}}}
+    \fancyhead[R]{
+      \footnotesize
+      Language Documentation \& Conservation Special Publication No. 16
+      \\
+      \textit{\booktitle}
+      \\
+      ed. by  Gary Holton and Thomas Thornton, pp. \beginchapter{}--\finishchapter{}
+      \\
+      \url{http://nflrc.hawaii.edu/ldc/}
+      \\
+      \url{http://hdl.handle.net/\handle}
+      \\
+      }
+    \fancyfoot[L]{\includegraphics{figures/by-nc-sa.png}}
+    \fancyfoot[R]{ISBN: 978-0-9973295-4-4}
+  }
+
+
+% Footnote options
+\usepackage[
+splitrule,
+flushmargin,
+hang
+]{footmisc} %%package for tweaking footnotes
+%\usepackage{footnote}
+%  \setlength{\footnotesep}{0.08cm} %%%sets space between footnotes
+%  \setlength{\footnotemargin}{0.08cm}
+
+% For creating chapter abstracts
+\makeatletter
+\newenvironment{Abstract}
+    {\list{}{\listparindent 0em%
+    %\setlength{\leftmargin}{<value>} adjust if you need
+    \itemindent\listparindent
+    \rightmargin\leftmargin
+    \parsep\z@ \@plus\p@
+    }%
+    \item\relax}
+    {\endlist}
+\makeatother
+
+% For creating chapter authors in titles for each chapter
+\makeatletter
+\newcommand{\chapauth}[1]{%
+  {\centering\vspace*{-25pt}%
+  \Large#1%
+  \par\nobreak\vspace*{0pt}}
+  \@afterheading%
+}
+\newcommand{\affiliation}[1]{%
+  {\centering\vspace*{0pt}%
+  \itshape\large#1%
+  \par\nobreak\vspace*{35pt}}
+  \@afterheading%
+}
+\makeatother
+
+% Exclude Part title pages from getting page numbers
+\makeatletter
+\renewcommand\part{%
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \thispagestyle{empty}%   % Original »plain« replaced by »emptyx
+  \if@twocolumn
+    \onecolumn
+    \@tempswatrue
+  \else
+    \@tempswafalse
+  \fi
+  \null\vfil
+  \secdef\@part\@spart}
+\makeatother
+
+%% Table of contents %%
+\usepackage{titletoc}
+\titlecontents{part}
+    [0em]
+    {\addvspace{2em}}%
+    {}% numbered sections formatting
+    {\bfseries\uppercase}% unnumbered sections formatting
+    {}%
+
+\titlecontents{chapter}
+    [1.5em]
+    {\addvspace{1em}\bfseries}
+    {\contentslabel{1.3em}}
+    {\hspace*{-1.3em}}
+    {\titlerule*[.5pc]{.}\contentspage}
+
+\makeatletter
+\DeclareRobustCommand\authortoctext[1]{%
+{\addvspace{1pt}\nopagebreak\leftskip1.5em\relax
+\rightskip \@tocrmarg\relax
+\noindent\itshape#1\par\addvspace{-7pt}}}
+\makeatother
+\newcommand\authortoc[1]{%
+  \gdef\chapterauthor{#1}%
+  \addtocontents{toc}{\authortoctext{#1}}}
+\makeatother
+
+\setcounter{tocdepth}{0}
+
+
+\begin{document}
+
+
+
+\frontmatter
+\pagestyle{empty}
+    \includepdf[pages=-]{kari-cover.pdf}
+    \input{Kari-Title-Page.tex}
+    \input{Kari-Copyright-Page.tex}
+    \sloppy
+    \tableofcontents
+	\include{contributor_bios}
+	
+%\todo[inline]{Note: page numbers are preliminary}
+\mainmatter
+\pagestyle{fancy}
+
+
+     \include{introduction}
+
+    \include{pratt}
+
+     \include{thornton}
+
+     \include{schreyer}
+
+     \include{berez}
+
+   \include{brucks}
+
+    \include{holton}
+
+    \include{moore}
+
+    \include{jett}
+
+    \include{vajda}
+
+     \include{drozda}
+
+
+\end{document}
